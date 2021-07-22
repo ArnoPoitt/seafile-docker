@@ -17,7 +17,7 @@ MYSQL_ROOT_PW="$1"
 
 [[ -z "${MYSQL_ROOT_PW}" ]] && echo "Now you will be asked for MySQL root password:"
 
-mysql -hmysql -uroot -p${MYSQL_ROOT_PW} <<'EOF'
+mysql -h${SEAFILE_DB_HOST} -uroot -p${MYSQL_ROOT_PW} <<'EOF'
 DROP DATABASE IF EXISTS `ccnet_db`;
 DROP DATABASE IF EXISTS `seafile_db`;
 DROP DATABASE IF EXISTS `seahub_db`;
@@ -39,7 +39,7 @@ EOF
 cp -r "${SEAFILE_PATH}" /seafile/seafile-server
 
 /seafile/seafile-server/setup-seafile-mysql.sh auto -e 1 -n seafile \
-    -p 8082 -o mysql -u seafile -w seafile \
+    -p 8082 -o ${SEAFILE_DB_HOST} -u seafile -w seafile \
     -c ccnet_db -s seafile_db -b seahub_db
 
 # removing temporary copied installation and set up symlink
